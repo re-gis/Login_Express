@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="head">Sign Up</h1>
+      <form action="#" method="post">
+        <div class="layOut">
+          <label for="name">Username</label>
+          <input type="text" name="uname" id="uname" />
+        </div>
+        <div class="layOut">
+          <label for="email">Email</label>
+          <input type="email" name="email" id="email" />
+        </div>
+        <div class="layOut">
+          <label for="password">Password</label>
+          <input type="password" name="password" id="password" />
+        </div>
+        <div class="layOut btn">
+          <input onclick="submit()" type="submit" name="btn" id="button" value="Submit" />
+        </div>
+      </form>
+    </div>
+
+
+    <script src="./index1.js"></script>
+    <style>
+      * {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    border: 1px solid black;
+    border-radius: 10px;
+    width: 500px;
+    height: 250px;
+    /* text-align: center; */
+    /* padding-top: 50px; */
+    margin-left: 500px;
+    margin-top: 200px;
+    /* padding-bottom: 10px; */
+}
+
+.layOut {
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.btn {
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+.head {
+    text-align: center;
+    padding-top: 10px;
+    /* color: red; */
+}
+
+input {
+    height: 30px;
+}
+    </style>
+
+    <script>
+      const submit = () => {
+        const name = document.getElementById('uname')
+        const  email = document.getElementById('email')
+        const  btn = document.getElementById('button')
+        const pass = document.getElementById('password')
+        
+        name.textContent = " "
+        email.textContent = " "
+        pass.textContent = " "
+      }
+    </script>
+  </body>
+</html>
