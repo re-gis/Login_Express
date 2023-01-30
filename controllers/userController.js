@@ -1,72 +1,93 @@
 const connect = require('../config/db')
 const mysql = require('mysql')
+const emailValidator = require('deep-email-validator')
 
 
-const getUsers = (req, res) => {
-    
-        // Get user from the db
-    
-        let sql = 'SELECT * FROM users'
-        connect.query(sql, (err, data) => {
+
+
+    // Signup Page 
+ const signPage = (req, res) => {
+        res.render('index')
+           
+    }
+
+ 
+ 
+ 
+    // Sign up user
+const signUser = (req, res) => {
+    let name = req.body.uname
+    let email = req.body.email
+    let pass = req.body.password
+    let pic = req.body.pic
+
+    if(!name || !email || !pass) {
+        res.send('Input all credentials!')
+    } else {
+        let sql = `INSERT INTO users (name, picture, password, email) VALUES ('${name}', '${pic}', '${pass}', '${email}');`
+        connect.query(sql, (err) => {
             if(err) {
                 console.log(err);
             } else {
-                res.json({users: data})
-                // res.render('index')
+                res.render('dash')
             }
         })
+    }
     
-    
+
+}
+
+    // Login Page
+
+    const loginPage = (req, res) => {
+        res.render('login')
+    }
+
+    // Login user
+
+const loginUser = (req, res) => {
+    let loginEmail = req.body.email
+    let loginPass = req.body.pass
+
+    let sql = `SELECT email FROM users WHERE email = '${loginEmail}';`
+    connect.query(sql, (err, data) => {
+        if(err) {
+            console.log(err);
+        } else {
+            if(data === null || !loginEmail){
+                res.send('No user available')
+            } else {
+               res.render('dash')
+            }
+        } 
+    })
     
 }
 
 
-const signUser = (req, res) => {
-    res.render('index')
-    
-    const uname = req.body.uname
-    res.send(uname)
-    console.log(uname);
-    
-    
-}
-
-
+    // Update the user
 const updateUser = (req, res) => {
     
-        // Get specified user
-        let sql3 = `SELECT * FROM users WHERE user_id = user_id`
-        connect.query(sql3, (err) => {
-            if(err) {
-                console.log(err);
-            } else {
-                res.json({updated_user: `${req.params.id} updated`})
-            }
-        })
+        
     
     
 }
 
 
+    // Delete the user
 const deleteUser = (req, res) => {
     
-        // Get the user from the db
-        let sql4 = `SELECT * FROM users WHERE user_id = user_id`
-        connect.query(sql4, (err) => {
-            if(err) {
-                console.log(err);
-            } else {
-                res.json({updated_user: `${req.params.id} deleted`})
-            }
-        })
+        
     
     
 }
 
 
 module.exports = {
-    getUsers,
+    signPage,
     signUser,
     updateUser,
     deleteUser,
+    loginUser,
+    loginPage
 }

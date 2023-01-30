@@ -9,12 +9,8 @@
   </head>
   <body>
     <div class="container">
-      <h1 class="head">Sign Up</h1>
-      <form action="/dash" method="post">
-        <div class="layOut">
-          <label for="name">Username</label>
-          <input type="text" name="uname" id="uname" />
-        </div>
+      <h1 class="head">Login</h1>
+      <form action="/loginUser" method="post">
         <div class="layOut">
           <label for="email">Email</label>
           <input type="email" name="email" id="email" />
@@ -23,14 +19,10 @@
           <label for="password">Password</label>
           <input type="password" name="password" id="password" />
         </div>
-        <div class="layOut">
-          <label for="picture">Picture</label>
-          <input type="file" name="pic" id="pic">
-        </div>
         <div class="layOut btn">
           <input onclick="submit()" type="submit" name="btn" id="button" value="Submit" />
         </div>
-        <a href="/login">Login instead...</a>
+        <a href="/">Signup instead...</a>
       </form>
     </div>
 
@@ -47,7 +39,7 @@
     border: 1px solid black;
     border-radius: 10px;
     width: 500px;
-    height: 320px;
+    height: 225px;
     /* text-align: center; */
     /* padding-top: 50px; */
     margin-left: 500px;
