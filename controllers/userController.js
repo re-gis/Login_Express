@@ -48,16 +48,17 @@ const signUser = (req, res) => {
 const loginUser = (req, res) => {
     let loginEmail = req.body.email
     let loginPass = req.body.pass
-
-    let sql = `SELECT * FROM users`
+    let sql = `SELECT * FROM users where email='${loginEmail}'`
     connect.query(sql, (err, data) => {
         if(err) {
             console.log(err);
         } else {
-            if(data === null || !loginEmail){
+            if(data.length == 0 || !loginEmail){
                 res.send('No user available')
             } else {
-               console.log(data);
+                res.render('dash')
+                console.log(data.length);
+            //    console.log(data);
             }
         } 
     })
@@ -82,6 +83,10 @@ const deleteUser = (req, res) => {
     
 }
 
+const login = (req, res) => {
+    res.render('dash')
+}
+
 
 module.exports = {
     signPage,
@@ -89,5 +94,6 @@ module.exports = {
     updateUser,
     deleteUser,
     loginUser,
-    loginPage
+    loginPage,
+    login
 }
