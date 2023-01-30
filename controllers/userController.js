@@ -49,7 +49,7 @@ const loginUser = (req, res) => {
     let loginEmail = req.body.email
     let loginPass = req.body.pass
 
-    let sql = `SELECT email FROM users WHERE email = '${loginEmail}';`
+    let sql = `SELECT * FROM users`
     connect.query(sql, (err, data) => {
         if(err) {
             console.log(err);
@@ -57,7 +57,7 @@ const loginUser = (req, res) => {
             if(data === null || !loginEmail){
                 res.send('No user available')
             } else {
-               res.render('dash')
+               console.log(data);
             }
         } 
     })
