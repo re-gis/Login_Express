@@ -6,6 +6,7 @@ const {
   loginPage,
   loginUser,
   updatePage,
+  updateUser
 } = require("../controllers/userController");
 
 // Signup Page
@@ -22,4 +23,9 @@ route.post("/login", loginUser);
 
 // Update Page
 route.get('/update', updatePage)
+
+
+route.post('/update', updateUser)
+
+
 module.exports = route;

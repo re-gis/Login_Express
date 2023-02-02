@@ -7,38 +7,36 @@
     <title>Update</title>
   </head>
   <body>
-      <h1>Update and Delete Page</h1>
-      <form action="/update" method="post">
+    <h1>Update and Delete Page</h1>
+    <form action="/update" method="post" enctype="multipart/form-data">
+      <div>
+        <label for="name">New Name:</label>
+        <input type="text" name="name" placeholder="Name" />
+      </div>
 
+      <div>
+        <label for="email">Old Email:</label>
+        <input type="email" name="oldEmail" placeholder="Old Email" />
+      </div>
 
-        <div>
-          <label for="name">New Name:</label>
-          <input type="text" name="name" placeholder="Name" />
-        </div>
+      <div>
+        <label for="email">New Email:</label>
+        <input type="email" name="email" placeholder="Email" />
+      </div>
 
-        
-        <div>
-          <label for="email">New Email:</label>
-          <input type="email" name="email" placeholder="Email" />
-        </div>
+      <div>
+        <label for="password">Old Password:</label>
+        <input type="password" name="oldPass" placeholder="Old Password" />
+      </div>
 
+      <div>
+        <label for="password">New Password:</label>
+        <input type="password" name="pass" placeholder="New Password" />
+      </div>
 
-        <div>
-            <label for="password">Old Password:</label>
-            <input type="password" name="oldPass" placeholder="Old Password" />
-          </div>
-
-
-        <div>
-          <label for="password">New Password:</label>
-          <input type="password" name="pass" placeholder="New Password" />
-        </div>
-        
-        
-
-        <div>
-          <button>Update</button>
-        </div>
-      </form>
+      <div>
+        <button>Update</button>
+      </div>
+    </form>
   </body>
 </html>

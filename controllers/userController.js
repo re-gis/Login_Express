@@ -20,8 +20,13 @@ const signUser = (req, res) => {
   let pic = req.body.pic;
 
   // Ecrypt password
-  // const salt = bcrypt.genSalt(10);
-  // const hashedPass = bcrypt.hash(pass, salt)
+  const salt = bcrypt.genSalt(10, (err, hash) => {
+    if (err) {
+      console.log(err);
+    } else {
+      const hashedPass = bcrypt.hash(loginPass, salt);
+    }
+  });
 
   if (!loginName || !loginEmail || !loginPass) {
     res.send("Input all credentials!");
@@ -36,7 +41,7 @@ const signUser = (req, res) => {
         if (data.length == 0) {
           // Save the user in the database
 
-          let sql2 = `INSERT INTO users (name, picture, password, email) VALUES ('${loginName}', '${pic}', '${loginPass}', '${loginEmail}')`;
+          let sql2 = `INSERT INTO users (name, picture, password, email) VALUES ('${loginName}', '${pic}', '${loginPass}', '${hashedPass}')`;
           connect.query(sql2, (err) => {
             if (err) {
               console.log(err);
@@ -92,7 +97,66 @@ const updatePage = (req, res) => {
   res.render("update");
 };
 
+// Update the user's credentials
+const updateUser = (req, res) => {
+  let newName = req.body.name;
+  let newEmail = req.body.email;
+  let oldEmail = req.body.oldEmail;
+  let newPass = req.body.pass;
+  let oldPass = req.body.oldPass;
 
+  // console.log(newName  +  newEmail  +  oldEmail  + newPass  + oldPass);
+
+  let sql3 = `SELECT * FROM users WHERE email = '${oldEmail}'`;
+  connect.query(sql3, (err, data) => {
+    if (err) {
+      console.log(err);
+    } else {
+      if (oldPass !== data[0].password) {
+        res.send("Password not matching!");
+      } else {
+        if (!newName && !newEmail && !newPass) {
+          newName = data[0].name;
+          newEmail = data[0].email;
+          newPass = data[0].password;
+          res.send("Enter new credentials");
+        } else {
+          let sql4 = `UPDATE users SET name = '${newName}', email = '${newEmail}', password = '${newPass}'`;
+          connect.query(sql4, (err) => {
+            if (err) {
+              console.log(err);
+            } else {
+              console.log("Done");
+              // alert('Done')
+            }
+          });
+        }
+      }
+    }
+  });
+
+  // let sql4 = `SELECT * FROM users WHERE password = '${oldPass}'`;
+  // connect.query(sql4, (err, data) => {
+  //   if (err) {
+  //     console.log(err);
+  //   } else {
+  //     console.log(data);
+  //     let sql5 = `UPDATE users SET name = '${newName}', email = '${newEmail}', password = '${newPass}' WHERE password = '${oldPass}'`;
+  //     connect.query(sql5, (err) => {
+  //       if (err) {
+  //         console.log(err);
+  //       }
+  //       res.send("Updated successfully!");
+  //     });
+  //   }
+  // });
+};
+
+// Delete account
+
+const deleteAcc = (req, res) => {
+ // 
+};
 
 module.exports = {
   signPage,
@@ -100,4 +164,7 @@ module.exports = {
   loginPage,
   loginUser,
   updatePage,
+  updateUser,
+  deleteAcc,
+  // updated
 };
