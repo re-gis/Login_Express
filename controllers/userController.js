@@ -1,99 +1,103 @@
-const connect = require('../config/db')
-const mysql = require('mysql')
-const emailValidator = require('deep-email-validator')
+const connect = require("../config/db");
+const mysql = require("mysql");
+const emailValidator = require("deep-email-validator");
+const bcrypt = require("bcrypt");
+const flash = require("connect-flash");
+const session = require("express-session");
+const cookieParser = require("cookie-parser");
+const { name } = require("ejs");
 
+// Signup Page
+const signPage = (req, res) => {
+  res.render("index");
+};
 
-
-
-    // Signup Page 
- const signPage = (req, res) => {
-        res.render('index')
-           
-    }
-
- 
- 
- 
-    // Sign up user
+// Sign up user
 const signUser = (req, res) => {
-    let name = req.body.uname
-    let email = req.body.email
-    let pass = req.body.password
-    let pic = req.body.pic
+  let loginName = req.body.uname;
+  let loginEmail = req.body.email;
+  let loginPass = req.body.password;
+  let pic = req.body.pic;
 
-    if(!name || !email || !pass) {
-        res.send('Input all credentials!')
-    } else {
-        let sql = `INSERT INTO users (name, picture, password, email) VALUES ('${name}', '${pic}', '${pass}', '${email}');`
-        connect.query(sql, (err) => {
-            if(err) {
-                console.log(err);
-            } else {
-                res.render('dash')
-            }
-        })
-    }
-    
+  // Ecrypt password
+  // const salt = bcrypt.genSalt(10);
+  // const hashedPass = bcrypt.hash(pass, salt)
 
-}
+  if (!loginName || !loginEmail || !loginPass) {
+    res.send("Input all credentials!");
+  } else {
+    // Check if email already exists
 
-    // Login Page
-
-    const loginPage = (req, res) => {
-        res.render('login')
-    }
-
-    // Login user
-
-const loginUser = (req, res) => {
-    let loginEmail = req.body.email
-    let loginPass = req.body.pass
-    let sql = `SELECT * FROM users where email='${loginEmail}'`
+    let sql = `SELECT * FROM users WHERE email = '${loginEmail}'`;
     connect.query(sql, (err, data) => {
-        if(err) {
-            console.log(err);
-        } else {
-            if(data.length == 0 || !loginEmail){
-                res.send('No user available')
+      if (err) {
+        console.log(err);
+      } else {
+        if (data.length == 0) {
+          // Save the user in the database
+
+          let sql2 = `INSERT INTO users (name, picture, password, email) VALUES ('${loginName}', '${pic}', '${loginPass}', '${loginEmail}')`;
+          connect.query(sql2, (err) => {
+            if (err) {
+              console.log(err);
             } else {
-                res.render('dash')
-                console.log(data.length);
-            //    console.log(data);
+              res.render("dash", { loginName, loginEmail, loginPass });
             }
-        } 
-    })
-    
-}
+          });
+        } else {
+          res.send("Email already exists!");
+        }
+      }
+    });
+  }
+};
 
+// Login Page
 
-    // Update the user
-const updateUser = (req, res) => {
-    
-        
-    
-    
-}
+const loginPage = (req, res) => {
+  res.render("login");
+};
 
+// Login user
+const loginUser = (req, res) => {
+  let loginEmail = req.body.email;
+  let loginPass = req.body.password;
 
-    // Delete the user
-const deleteUser = (req, res) => {
-    
-        
-    
-    
-}
+  if (!loginEmail || !loginPass) {
+    res.send("Input all credentials please!");
+  } else {
+    // Validating the email
 
-const login = (req, res) => {
-    res.render('dash')
-}
+    let query = `SELECT * FROM users WHERE email = '${loginEmail}' AND password = '${loginPass}'`;
+    connect.query(query, (err, data) => {
+      if (err) {
+        console.log(err);
+      } else {
+        if (data.length == 0) {
+          res.send("Invalid email or password!");
+        } else {
+          const loginName = data[0].name;
+          const loginEmail = data[0].email;
+          const loginPass = data[0].password;
+
+          res.render("dash", { loginName, loginEmail, loginPass });
+        }
+      }
+    });
+  }
+};
+
+// Update Page
+const updatePage = (req, res) => {
+  res.render("update");
+};
+
 
 
 module.exports = {
-    signPage,
-    signUser,
-    updateUser,
-    deleteUser,
-    loginUser,
-    loginPage,
-    login
-}
+  signPage,
+  signUser,
+  loginPage,
+  loginUser,
+  updatePage,
+};

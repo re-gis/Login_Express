@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Update</title>
+  </head>
+  <body>
+      <h1>Update and Delete Page</h1>
+      <form action="/update" method="post">
+
+
+        <div>
+          <label for="name">New Name:</label>
+          <input type="text" name="name" placeholder="Name" />
+        </div>
+
+        
+        <div>
+          <label for="email">New Email:</label>
+          <input type="email" name="email" placeholder="Email" />
+        </div>
+
+
+        <div>
+            <label for="password">Old Password:</label>
+            <input type="password" name="oldPass" placeholder="Old Password" />
+          </div>
+
+
+        <div>
+          <label for="password">New Password:</label>
+          <input type="password" name="pass" placeholder="New Password" />
+        </div>
+        
+        
+
+        <div>
+          <button>Update</button>
+        </div>
+      </form>
+  </body>
+</html>

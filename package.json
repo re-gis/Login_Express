@@ -18,11 +18,15 @@
   },
   "homepage": "https://github.com/re-gis/Login_Express#readme",
   "dependencies": {
+    "async-handler": "^0.0.3",
     "bcrypt": "^5.1.0",
     "colors": "^1.4.0",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.6",
     "deep-email-validator": "^0.1.21",
     "ejs": "^3.1.8",
     "express": "^4.18.2",
+    "express-session": "^1.17.3",
     "mysql": "^2.18.1",
     "nodemon": "^2.0.20"
   }
