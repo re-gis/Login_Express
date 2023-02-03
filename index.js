@@ -6,7 +6,7 @@ const session = require('express-session')
 const cookieParser = require('cookie-parser')
 const colors = require('colors')
 const app = express();
-
+app.use(express.json())
 app.use(express.urlencoded({ extended: false }));
 app.set("view engine", "ejs");
 

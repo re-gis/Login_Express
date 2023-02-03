@@ -1,7 +1,7 @@
 const connect = require("../config/db");
 const mysql = require("mysql");
 const emailValidator = require("deep-email-validator");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const flash = require("connect-flash");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
@@ -13,21 +13,19 @@ const signPage = (req, res) => {
 };
 
 // Sign up user
-const signUser = (req, res) => {
+const signUser = async (req, res) => {
+  // let {
+  //     uname,
+  //     email,passord
+  // }=req.body
   let loginName = req.body.uname;
   let loginEmail = req.body.email;
   let loginPass = req.body.password;
   let pic = req.body.pic;
 
   // Ecrypt password
-  const salt = bcrypt.genSalt(10, (err, hash) => {
-    if (err) {
-      console.log(err);
-    } else {
-      const hashedPass = bcrypt.hash(loginPass, salt);
-    }
-  });
-
+  var hashedPass = await bcrypt.hash(loginPass, 10);
+  // console.log(req.body);
   if (!loginName || !loginEmail || !loginPass) {
     res.send("Input all credentials!");
   } else {
@@ -41,7 +39,7 @@ const signUser = (req, res) => {
         if (data.length == 0) {
           // Save the user in the database
 
-          let sql2 = `INSERT INTO users (name, picture, password, email) VALUES ('${loginName}', '${pic}', '${loginPass}', '${hashedPass}')`;
+          let sql2 = `INSERT INTO users (name, picture, password, email) VALUES ('${loginName}', '${pic}', '${hashedPass}', '${loginEmail}')`;
           connect.query(sql2, (err) => {
             if (err) {
               console.log(err);
@@ -64,7 +62,7 @@ const loginPage = (req, res) => {
 };
 
 // Login user
-const loginUser = (req, res) => {
+const loginUser = async (req, res) => {
   let loginEmail = req.body.email;
   let loginPass = req.body.password;
 
@@ -73,20 +71,37 @@ const loginUser = (req, res) => {
   } else {
     // Validating the email
 
-    let query = `SELECT * FROM users WHERE email = '${loginEmail}' AND password = '${loginPass}'`;
-    connect.query(query, (err, data) => {
+    // Compare two passwords
+    const sql6 = `SELECT password FROM users WHERE email = '${loginEmail}'`;
+    connect.query(sql6, (err, data) => {
       if (err) {
         console.log(err);
       } else {
-        if (data.length == 0) {
-          res.send("Invalid email or password!");
-        } else {
-          const loginName = data[0].name;
-          const loginEmail = data[0].email;
-          const loginPass = data[0].password;
+        // console.log(data);
+        const pass = data[0].password;
+        // console.log(pass);
+        bcrypt.compare(loginPass, pass, (err, result) => {
+          if (result) {
+            let query = `SELECT * FROM users WHERE email = '${loginEmail}' AND password = '${pass}'`;
+            connect.query(query, (err, data) => {
+              if (err) {
 
-          res.render("dash", { loginName, loginEmail, loginPass });
-        }
+                console.log(err);
+              } else {
+                // console.log("no");
+                if (data.length == 0) {
+                  res.send("Invalid email or password!");
+                } else {
+                  const loginName = data[0].name;
+                  const loginEmail = data[0].email;
+                  const loginPass = req.body.password;
+
+                  res.render("dash", { loginName, loginEmail, loginPass });
+                }
+              }
+            });
+          }
+        });
       }
     });
   }
@@ -94,68 +109,88 @@ const loginUser = (req, res) => {
 
 // Update Page
 const updatePage = (req, res) => {
+  // const query2 = `SELECT * FROM users WHERE email = '${}'`
   res.render("update");
 };
 
 // Update the user's credentials
-const updateUser = (req, res) => {
+const updateUser = async (req, res) => {
+
+
+  // Update
+
   let newName = req.body.name;
   let newEmail = req.body.email;
-  let oldEmail = req.body.oldEmail;
   let newPass = req.body.pass;
+  let cpass = req.body.cpass;
+  let oldEmail = req.body.oldEmail;
   let oldPass = req.body.oldPass;
 
-  // console.log(newName  +  newEmail  +  oldEmail  + newPass  + oldPass);
-
-  let sql3 = `SELECT * FROM users WHERE email = '${oldEmail}'`;
-  connect.query(sql3, (err, data) => {
+  const query1 = `SELECT * FROM users WHERE email = '${oldEmail}'`;
+  connect.query(query1, async (err, data) => {
     if (err) {
       console.log(err);
     } else {
-      if (oldPass !== data[0].password) {
-        res.send("Password not matching!");
-      } else {
-        if (!newName && !newEmail && !newPass) {
-          newName = data[0].name;
-          newEmail = data[0].email;
-          newPass = data[0].password;
-          res.send("Enter new credentials");
+      const pass = data[0].password;
+      bcrypt.compare(oldPass, pass, async (err, result) => {
+        if (result) {
+          if(newPass) {
+            const hashed = await bcrypt.hash(newPass, 10);
+            let query3 = `UPDATE users SET name = '${newName}', email = '${newEmail}', password = '${hashed}'`
+            connect.query(query3, (err) => {
+              if(err) {
+                console.log(err);
+              } else {
+                res.send('Updated')
+              }
+            })
+          }
         } else {
-          let sql4 = `UPDATE users SET name = '${newName}', email = '${newEmail}', password = '${newPass}'`;
-          connect.query(sql4, (err) => {
-            if (err) {
-              console.log(err);
-            } else {
-              console.log("Done");
-              // alert('Done')
-            }
-          });
+          res.send("Please confirm the old password to update!");
+          // alert('no')
         }
-      }
+      });
     }
   });
-
-  // let sql4 = `SELECT * FROM users WHERE password = '${oldPass}'`;
-  // connect.query(sql4, (err, data) => {
-  //   if (err) {
-  //     console.log(err);
-  //   } else {
-  //     console.log(data);
-  //     let sql5 = `UPDATE users SET name = '${newName}', email = '${newEmail}', password = '${newPass}' WHERE password = '${oldPass}'`;
-  //     connect.query(sql5, (err) => {
-  //       if (err) {
-  //         console.log(err);
-  //       }
-  //       res.send("Updated successfully!");
-  //     });
-  //   }
-  // });
 };
+
+
+// Delete page
+const deletePage = (req, res) => {
+  res.render('delete')
+}
 
 // Delete account
 
-const deleteAcc = (req, res) => {
- // 
+const deleteAcc = async (req, res) => {
+  const email = req.body.email
+  const pass = req.body.password
+
+  let query5 = `SELECT password FROM users WHERE email = '${email}'`
+  connect.query(query5, async (err, data) => {
+    if(err) {
+      console.log(err);
+    } else {
+      console.log(data[0].password);
+      const hashed = await bcrypt.hash(pass, 10)
+      console.log(hashed);
+
+      
+    }
+  })
+
+
+
+  // if(hashed !== )
+
+  // let query4 = `SELECT * FROM users WHERE email = '${email}' AND password = '${pass}'`
+  // connect.query(query4, (err, data) => {
+  //   if(err) {
+  //     console.log(err);
+  //   } else {
+      
+  //   }
+  // })
 };
 
 module.exports = {
@@ -166,5 +201,6 @@ module.exports = {
   updatePage,
   updateUser,
   deleteAcc,
+  deletePage
   // updated
 };

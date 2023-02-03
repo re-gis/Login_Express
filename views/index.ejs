@@ -10,7 +10,7 @@
   <body>
     <div class="container">
       <h1 class="head">Sign Up</h1>
-      <form action="/" method="post" enctype="multipart/form-data">
+      <form action="/" method="post">
         <div class="layOut">
           <label for="name">Username</label>
           <input type="text" name="uname" id="uname" />
@@ -25,77 +25,91 @@
         </div>
         <div class="layOut">
           <label for="picture">Picture</label>
-          <input type="file" name="pic" id="pic">
+          <input class="lay" type="file" name="pic" id="pic" />
         </div>
         <div class="layOut btn">
-          <input onclick="submit()" type="submit" name="btn" id="button" value="Submit" />
+          <input class="button" type="submit" value="Signup" id="button" name="btn" onclick="submit()">
+          <!-- <button>Signup</button> -->
         </div>
-        <a href="/login">Login instead...</a>
+        <a class="link" href="/login">Login instead...</a>
       </form>
     </div>
 
-
-    <script src="./index1.js"></script>
     <style>
-      * {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-}
+      .container {
+        padding: 40px;
+      }
 
-.container {
-    border: 1px solid black;
-    border-radius: 10px;
-    width: 500px;
-    height: 320px;
-    /* text-align: center; */
-    /* padding-top: 50px; */
-    margin-left: 500px;
-    margin-top: 200px;
-    /* padding-bottom: 10px; */
-}
+      .head {
+        color: blue;
+        text-align: center;
+        /* text-decoration: underline; */
+      }
 
-.layOut {
-    display: flex;
-    flex-direction: column;
-    margin-left: 20px;
-    margin-right: 20px;
-}
+      form {
+        display: block;
+        margin: auto;
+        width: 400px;
+        border: 3px solid blue;
+        padding: 40px;
+        border-radius: 5px;
+      }
 
-.btn {
-    margin-top: 20px;
-    cursor: pointer;
-}
+      label {
+        display: flex;
+        padding-bottom: 5px;
+        padding-top: 10px;
+      }
 
-.head {
-    text-align: center;
-    padding-top: 10px;
-    /* color: red; */
-}
+      input {
+        width: 250px;
+        height: 25px;
+        outline: 0px;
+        border: 1px solid black;
+        border-radius: 5px;
+        padding-left: 15px;
+      }
 
-input {
-    height: 30px;
-}
+      .lay {
+        border: 0px;
+      }
 
-a {
-  margin-left: 200px;
-  text-decoration: none;
-  color: black;
-  cursor: pointer;
-}
+
+      .button {
+        width: 150px;
+        background-color: blue;
+        outline: 0px;
+        border: 0px;
+        height: 30px;
+        text-align: center;
+        margin-top: 20px;
+        border-radius: 5px;
+      }
+
+      .button:active {
+        transform: scaleY(0.5);
+      }
+
+      a {
+        color: blue;
+        text-decoration: none;
+        margin-top: 10px;
+      }
+      
+
     </style>
 
     <script>
       const submit = () => {
-        const name = document.getElementById('uname')
-        const  email = document.getElementById('email')
-        const  btn = document.getElementById('button')
-        const pass = document.getElementById('password')
-        
-        name.textContent = " "
-        email.textContent = " "
-        pass.textContent = " "
-      }
+        const name = document.getElementById("uname");
+        const email = document.getElementById("email");
+        const btn = document.getElementById("button");
+        const pass = document.getElementById("password");
+
+        name.textContent = " ";
+        email.textContent = " ";
+        pass.textContent = " ";
+      };
     </script>
   </body>
 </html>

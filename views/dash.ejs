@@ -7,37 +7,38 @@
     <title>Dashboard</title>
   </head>
   <body>
-
     <!-- Html-->
-    
+
     <div class="container">
       <div class="heading">
         <h1>Dashboard</h1>
       </div>
-      <div class="greeting">
-        <h2>Hello <%= loginName %></h2>
-      </div>
-      <div>
-        <form action="/update" method="get">
-          <div class="userData">
-            <table>
-              <tr>
-                <td>Name</td>
-                <td><%= loginName %></td>
-              </tr>
-              <tr>
-                <td>Email</td>
-                <td><%= loginEmail %></td>
-              </tr>
-              <tr>
-                <td>Password</td>
-                <td><%= loginPass %></td>
-              </tr>
-            </table>
-          </div>
-          <button>Update</button>
-        </form>
-        <button onclick="btnChange()">Delete Account</button>
+      <div class="bodyContainer">
+        <div class="greeting">
+          <h2>Hello <span><%= loginName %></span></h2>
+        </div>
+        <div>
+          <form action="/update" method="get">
+            <div class="userData">
+              <table>
+                <tr>
+                  <td>Name</td>
+                  <td><%= loginName %></td>
+                </tr>
+                <tr>
+                  <td>Email</td>
+                  <td><%= loginEmail %></td>
+                </tr>
+                <tr>
+                  <td>Password</td>
+                  <td><%= loginPass %></td>
+                </tr>
+              </table>
+            </div>
+            <button>Update</button>
+          </form>
+          <button class="delete" onclick="btnChange()">Delete Account</button>
+        </div>
       </div>
     </div>
 
@@ -49,25 +50,78 @@
         location.href = "/delete";
       };
     </script>
-    
+
     <!-- Stylesheet-->
-    
+
     <style>
       .container {
-        text-align: center;
+        padding: 50px;
       }
 
-      .formLay {
-        margin-left: 600px;
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+
+      h1 {
+        text-align: center;
+        color: blue;
+        /* text-decoration: underline; */
+      }
+
+      h2 {
+        padding-top: 30px;
+        padding-bottom: 30px;
+      }
+
+      span {
+        color: blue;
+        /* text-decoration: underline; */
+        cursor: pointer;
       }
 
       table,
       th,
       td {
         border: 1px solid black;
+        padding: 20px;
+      }
+
+      table {
         border-collapse: collapse;
-        padding: 5px;
-        margin-left: 600px;
+      }
+
+      td:first-child {
+        font-weight: bolder;
+        color: blue;
+        text-decoration: underline;
+        cursor: pointer;
+      }
+
+      button {
+        width: 150px;
+        background-color: blue;
+        outline: 0px;
+        border: 0px;
+        height: 30px;
+        text-align: center;
+        margin-top: 40px;
+        border-radius: 5px;
+      }
+
+      button:active {
+        transform: scaleY(0.5);
+      }
+
+      .bodyContainer {
+        margin: auto;
+        width: 50%;
+        padding: 10px;
+      }
+
+      .delete {
+        background-color: red;
       }
     </style>
   </body>
