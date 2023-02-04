@@ -78,6 +78,7 @@ const loginUser = async (req, res) => {
         console.log(err);
       } else {
         // console.log(data);
+        if(!data) { console.log('Not found')} else {
         const pass = data[0].password;
         // console.log(pass);
         bcrypt.compare(loginPass, pass, (err, result) => {
@@ -103,6 +104,7 @@ const loginUser = async (req, res) => {
           }
         });
       }
+    }
     });
   }
 };
@@ -171,11 +173,28 @@ const deleteAcc = async (req, res) => {
     if(err) {
       console.log(err);
     } else {
-      console.log(data[0].password);
-      const hashed = await bcrypt.hash(pass, 10)
-      console.log(hashed);
+      // console.log(data[0].password);
+      const pswd = data[0].password
+      // const hashed = await bcrypt.hash(pass, 10)
+      // console.log(hashed);
 
-      
+      bcrypt.compare(pass, pswd, (err, result) => {
+        if(err) {
+          console.log(err);
+        } else {
+          let sql7 = `DELETE FROM users WHERE email = '${email}'`
+          connect.query(sql7, (err) => {
+            if(err) {
+              console.log(err);
+            } else {
+              // console.log('deleted');
+              res.send('Deleted')
+            }
+          })
+        }
+      })
+
+
     }
   })
 

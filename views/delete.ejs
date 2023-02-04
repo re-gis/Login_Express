@@ -9,22 +9,88 @@
   <body>
     <h1>Delete Account Page</h1>
 
-    <form action="/delete" method="post">
-      <h3>Enter your Password and Email to confirm delete</h3>
-      
-      
-      <div class="inputLay">
-        <label for="email">Email:</label>
-        <input type="email" name="email" />
-      </div>
-      
-      
-      <div class="inputLay">
-        <label for="password">Password:</label>
-        <input type="password" name="password" />
-      </div>
+    <h3>Enter your Password and Email to confirm delete</h3>
+    <div class="container">
+      <form action="/delete" method="post">
 
-      <button type="submit">Delete</button>
-    </form>
+        <div class="inputLay">
+          <label for="email">Email:</label>
+          <input type="email" name="email" />
+        </div>
+
+        <div class="inputLay">
+          <label for="password">Password:</label>
+          <input type="password" name="password" />
+        </div>
+
+        <button type="submit">Delete</button>
+      </form>
+    </div>
+
+    <!-- Stylesheet -->
+
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        padding: 40px;
+      }
+
+      h3 {
+        text-align: center;
+        padding: 40px 40px;
+      }
+
+      .container {
+        margin: auto;
+        width: 400px;
+        border: 3px solid blue;
+        border-radius: 5px;
+        padding: 30px;
+      }
+
+      h1 {
+        color: blue;
+        text-align: center;
+      }
+
+      form {
+        padding-top: 10px;
+      }
+
+      label {
+        display: flex;
+        padding-bottom: 5px;
+      }
+
+      input {
+        width: 250px;
+        border: 1px solid black;
+        border-radius: 5px;
+        outline: 0px;
+        height: 25px;
+        padding-left: 10px;
+      }
+
+
+      button {
+        width: 150px;
+        background-color: red;
+        outline: 0px;
+        border: 0px;
+        height: 30px;
+        text-align: center;
+        margin-top: 40px;
+        border-radius: 5px;
+      }
+
+      button:active {
+        transform: scaleY(0.5);
+      }
+    </style>
   </body>
 </html>
